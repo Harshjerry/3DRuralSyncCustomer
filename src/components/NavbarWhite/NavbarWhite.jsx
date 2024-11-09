@@ -19,8 +19,8 @@ const NavbarWhite = () => {
           <Link to="/profile" className="nav-item">Welcome, {currentUser.data.name}</Link> // Display welcome message if user exists
         ) : (
           <>
-            <Link to="/register" className="nav-item">Register</Link>
-            <Link to="/login" className="nav-item">Login</Link>
+            <Link to="/register3d" className="nav-item">Register</Link>
+            <Link to="/login3d" className="nav-item">Login</Link>
           </>
         )}
         <Link to="/cart" className="nav-item">Cart</Link>

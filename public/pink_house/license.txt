@@ -1,0 +1,11 @@
+Model Information:
+* title:	Pink House
+* source:	https://sketchfab.com/3d-models/pink-house-4c8215427b5e46818db595d6558a7172
+* author:	CGulia (https://sketchfab.com/CGulia)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Pink House" (https://sketchfab.com/3d-models/pink-house-4c8215427b5e46818db595d6558a7172) by CGulia (https://sketchfab.com/CGulia) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

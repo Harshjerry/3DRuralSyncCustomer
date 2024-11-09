@@ -1,20 +1,22 @@
 import { loginStart, loginFailure, loginSuccess, logout } from "./userRedux";
-import axios from "axios"; // Import axios
+import axios from "axios";
 
 export const login = async (dispatch, user) => {
   dispatch(loginStart());
   try {
-    // Use axios directly for the POST request with credentials
+    // Send the login request with axios
     const res = await axios.post("http://localhost:5001/auth/login", user, {
-      withCredentials: true, // Allow sending of cookies
+      withCredentials: true, // Allows cookies to be sent with the request
     });
-    // Save the token to localStorage (or a cookie, based on your choice)
+    // Dispatch success action with response data
     dispatch(loginSuccess(res.data));
   } catch (err) {
-    dispatch(loginFailure());
+    // Enhanced error handling to capture specific error message
+    let errorMessage = "Login failed. Please try again.";
+    if (err.response && err.response.data) {
+      errorMessage = err.response.data.message || errorMessage;
+    }
+    console.error("Login error:", errorMessage); // Log error details for debugging
+    dispatch(loginFailure(errorMessage));
   }
-};
-
-export const logoutUser = async (dispatch) => {
-  dispatch(logout());
 };

@@ -1,0 +1,185 @@
+/* SingleService.css */
+
+.single_service {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    margin-top: 5vh;
+  }
+
+  
+  .singleServiceThumbnail {
+    padding-top: 10vh;
+    flex:1;
+    height: 80%;
+    justify-content: center;
+    text-align: center;
+    display: flex;
+  }
+  
+  .singleServiceImg{
+    height: 70%;
+    width: 70%;
+    object-fit: cover;
+}
+  
+  .singleServiceInfo {
+    padding-top: 10vh;
+    flex:1;
+    height: 80%;
+margin: 0;
+display: flex;
+flex-direction: column;
+  }
+  
+  .singleServiceInfo h1 {
+    font-size: 3.2rem;
+    margin: 3vh 0;
+
+  }
+  
+  .singleServiceInfo h2 {
+    font-size: 1.5em;
+    color: #b6afaf;
+  }
+  
+  .singleServiceInfo h4 {
+    font-size: 1.2em;
+    color: #914EC2;
+    margin: 15px 0;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .single_service_secHead{
+
+    margin: 0;
+  }
+  .single_service_sec1 {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    div{
+        flex: 1;
+    }
+  }
+  
+  .highlightedText{
+    color: black;
+    margin-left: 1vw;
+  }
+ 
+
+
+  .single_service_sec1 .category,
+  .single_service_sec1 .duration,
+  .single_service_sec2 p {
+    color: #b6afaf;
+    font-size: 1.2em;
+  }
+  
+  .single_service_sec3 {
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 20px;
+    height: 10vh;
+    button{
+        width: 20vw;
+        height: 70%;
+        border-radius: 2px;
+    }
+  }
+
+
+  
+  .single_service_btn {
+    display: flex;
+    flex:1;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .availabilityPopup {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 10px;
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .availabilityPopup ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .availabilityPopup ul li {
+    margin: 5px 0;
+    font-size: 1em;
+    color: #333;
+  }
+  
+  .closeBtn {
+    background-color: #333;
+    color: #fff;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .closeBtn:hover {
+    background-color: #555;
+  }
+  
+  .book,
+  .availability {
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+    background-color: black;
+  }
+  
+ 
+  .book:hover {
+    background-color:  #914EC2;
+  
+}
+  
+@media (max-width: 768px) {
+
+
+  .single_service{
+    flex-direction: column;
+  } 
+
+
+  .singleServiceThumbnail{
+    width: 100%;
+   .singleServiceImg{
+    height: 100%;
+    width: 100%;;
+   }
+  }
+
+  .singleServiceInfo{
+    padding-top: 1vh;
+    padding-left: 2vw;
+  }
+ .single_service_sec3{
+  button{
+    width: 40vw;
+  }
+ }
+
+     }

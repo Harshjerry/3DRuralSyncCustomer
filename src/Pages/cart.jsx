@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { addBooking, removeBooking } from "../redux/cartRedux";
 import axios from "axios";
 import { mobile } from "./../responsive";
+import { useNavigate } from "react-router-dom";
 
 // Styled components
 const Container = styled.div`
@@ -180,10 +181,12 @@ const Cart = () => {
   const [bookings, setBookings] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
   const [display, setDisplay] = useState("none");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (cart && Array.isArray(cart.bookings)) {
       setBookings(cart.bookings);
+      console.log(cart.bookings);
     } else {
       setBookings([]);
     }
@@ -213,14 +216,19 @@ const Cart = () => {
   };
 
   const handleCheckout = async () => {
+    if (!currentUser) {
+        alert("SIGN-UP REQUIRED FOR CHECKOUT");
+        return;
+    }
+
     if (bookings.length > 0 && userLocation) {
         try {
-            const bookingDate = new Date().toISOString().split('T')[0]; // Format the date correctly
+            const bookingDate = new Date().toISOString().split('T')[0];
             const bookingTime = "10:00 AM";
             const bookingData = {
                 clientId: currentUser.data._id,
-                serviceId: bookings[0].serviceId,
-                bookingDate: bookingDate, // Ensure this is formatted correctly
+                serviceId: bookings[0]._id,
+                bookingDate: bookingDate,
                 bookingTime: bookingTime,
                 location: {
                     type: "Point",
@@ -228,17 +236,17 @@ const Cart = () => {
                 },
             };
 
-            console.log("Booking data to be sent:", bookingData); // Log the booking data
+            console.log("Booking data to be sent:", bookingData);
 
             const response = await axios.post(
-              "http://localhost:5002/client/booking/book2",
-              bookingData // Send directly if it expects a single object
-          );
-          
+                "http://localhost:5002/client/booking/book2",
+                bookingData
+            );
 
             console.log("Booking posted successfully:", response.data);
             alert("Booking Done Successfully, Agent on the way");
             handleRemoveBooking(bookings[0]);
+            navigate("/profile"); // Navigate to profile after successful booking
         } catch (error) {
             if (error.response) {
                 console.error("Error posting booking:", error.response.data);
@@ -309,14 +317,16 @@ const Cart = () => {
               <SummaryItemText>Estimated Shipping</SummaryItemText>
               <SummaryItemPrice>$5.90</SummaryItemPrice>
             </SummaryItem>
+            <SummaryItem>
+              <SummaryItemText>Shipping Discount</SummaryItemText>
+              <SummaryItemPrice>- $5.90</SummaryItemPrice>
+            </SummaryItem>
             <SummaryItem type="total">
               <SummaryItemText>Total</SummaryItemText>
-              <SummaryItemPrice>${(cart.total || 0) + 5.9}</SummaryItemPrice>
+              <SummaryItemPrice>${cart.total || 0}</SummaryItemPrice>
             </SummaryItem>
-            {display === "block" && (
-              <Warn>You have not filled your location</Warn>
-            )}
             <Button onClick={handleCheckout}>CHECKOUT NOW</Button>
+            <Warn>{display === "none" ? "" : "Please provide location information to proceed"}</Warn>
           </Summary>
         </Bottom>
       </Container>

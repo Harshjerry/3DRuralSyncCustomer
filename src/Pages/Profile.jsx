@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar/Navbar';
 import { mobile } from "../responsive";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import LaptopCanvas from "../components/LaptopCanvas";
 
 // Styled Components
 const ProfileContainer = styled.div`
@@ -23,7 +24,7 @@ const ProfileHeader = styled.div`
   width: 82%;
   justify-content: center;
   gap: 15px;
-  margin-top: 40vh;
+  margin-top: 30vh;
 `;
 
 const ProfileImage = styled.img`
@@ -34,6 +35,7 @@ const ProfileImage = styled.img`
   border: 2px solid #ccc;
 `;
 
+
 const ProfileInfo = styled.div`
   display: flex;
   flex-direction: column;
@@ -42,7 +44,7 @@ const ProfileInfo = styled.div`
 const UserName = styled.h2`
   font-size: 3rem;
   margin: 0;
-  color: white;
+  color: Black;
 `;
 
 const UserEmail = styled.p`
@@ -53,16 +55,16 @@ const UserEmail = styled.p`
 
 const UserRole = styled.p`
   font-size: 0.9rem;
-  color: teal;
+color:#333;
 `;
 
 const BookingsSection = styled.div`
   width: 80%;
 `;
 
-const BookingsTitle = styled.h3`
-  font-size: 1.2rem;
-  color: white;
+const BookingsTitle = styled.h1`
+  font-size: 1.8rem;
+    color:  #914EC2;
   margin-bottom: 10px;
 `;
 
@@ -103,7 +105,7 @@ const NoBookings = styled.p`
 const Cont = styled.div`
   height: 100vh;
   width: 100vw;
-  background-color: #2a223d;
+  background-color: white;
   z-index: -2;
   display: flex;
        overflow-y: hidden;
@@ -113,9 +115,22 @@ const RS = styled.img`
   position: fixed;
   top: 18vh;
   left: -10vw;
-  filter: brightness(40%);
+    filter: brightness(20%);
+  opacity: 0.1; 
   z-index: -1;
 `;
+
+
+const LaptopCont = styled.div`
+  position: fixed;
+  top: 1vh;
+  left: 50%;
+  height: 50vh;
+  width: 50vw;
+  z-index: 4;
+  transform: translateX(-50%);
+`;
+
 
 const Profi = styled.img`
   position: absolute;
@@ -150,8 +165,10 @@ const ProfilePage = () => {
     <Cont>
       <Navbar />
       <ProfileContainer>
-        <Profi src='/profi.png' />
         <RS src='/flower.png' />
+        <LaptopCont>
+          <LaptopCanvas/>
+        </LaptopCont>
         <ProfileHeader>
           <ProfileInfo>
             <UserName>{currentUser.data.name}</UserName>

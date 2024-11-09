@@ -37,7 +37,7 @@ const ServiceList = () => {
     const fetchServices = async () => {
       try {
         const response = await axios.get('http://localhost:5002/client/booking/services'); // Direct GET request without headers
-        setServices(response.data);
+        setServices(response.data.data);
       } catch (error) {
         console.error('Error fetching services:', error);
       }

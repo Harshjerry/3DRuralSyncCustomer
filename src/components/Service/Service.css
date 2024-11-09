@@ -1,5 +1,5 @@
 .service {
-    height: 38vh;
+    height: 40vh;
     width: 30vw;
     display: flex;
     flex-direction: column;
@@ -23,13 +23,13 @@
   
   .service_instructor {
     margin: 0;
-    color: #d86b4c;
+    color:  #914EC2;
   }
   
   .service_name {
     margin: 0;
     color: #303433;
-    font-size: 0.8rem;
+    font-size: 1.3rem;
   }
   
   .service_info {

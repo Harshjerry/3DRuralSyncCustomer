@@ -1,6 +1,8 @@
 .service_section {
     align-items: center;
     text-align: center;
+    width: 100vw;
+    height: auto;
     display: flex;
     flex-direction: column;
   }
@@ -8,10 +10,10 @@
   .services {
     display: flex;
     flex-wrap: wrap;
-    height: 90vh;
+    height: auto;
     width: 100vw;
     column-gap: 2vw;
-    row-gap: 0vw;
+    row-gap: 4vw;
     align-items: center;
     justify-content: center;
     margin-top: 2vh;
@@ -34,3 +36,6 @@
     }
   }
   
+  .test{
+    align-items: flex-start;
+  }

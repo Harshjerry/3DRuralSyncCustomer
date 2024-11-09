@@ -1,0 +1,1 @@
+export const  AngleToRadians=(deg)=> (Math.PI/180)*deg;
