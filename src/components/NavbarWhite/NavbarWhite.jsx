@@ -1,22 +1,31 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // Import Link
+import { Link } from 'react-router-dom';
 import './NavbarWhite.css';
-import { useSelector } from 'react-redux'; // Import useSelector
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from '../../redux/UserRedux';
 
 const NavbarWhite = () => {
+  const dispatch = useDispatch();
+  const currentUser = useSelector((state) => state.user.currentUser);
 
-  const currentUser = useSelector((state) => state.user.currentUser); // Get the current user from Redux state
+  const handleLogout = () => {
+    dispatch(logout());
+    window.location.reload(); // Reloads the page after logout
+  };
 
   return (
     <div className="navbar2">
       <div className="navbar-left">
-        <Link to="/" className="nav-item">Home</Link> {/* Home link */}
-        <Link to="/services" className="nav-item">Services</Link> {/* Change to Link */}
+        <Link to="/" className="nav-item">Home</Link>
+        <Link to="/services" className="nav-item">Services</Link>
         <a href="#about" className="nav-item">About</a>
       </div>
       <div className="navbar-right">
-        {currentUser && currentUser.data ? ( // Check if currentUser and its data exist
-          <Link to="/profile" className="nav-item">Welcome, {currentUser.data.name}</Link> // Display welcome message if user exists
+        {currentUser && currentUser.data ? (
+          <>
+            <a className="nav-item" onClick={handleLogout}>Logout</a>
+            <Link to="/profile" className="nav-item">Welcome, {currentUser.data.name}</Link>
+          </>
         ) : (
           <>
             <Link to="/register3d" className="nav-item">Register</Link>

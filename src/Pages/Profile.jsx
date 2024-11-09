@@ -129,6 +129,7 @@ const LaptopCont = styled.div`
   width: 50vw;
   z-index: 4;
   transform: translateX(-50%);
+  ${mobile({ width:"100vw",top:"5vh"})};
 `;
 
 
