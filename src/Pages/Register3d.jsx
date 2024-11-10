@@ -2,9 +2,8 @@ import { useState } from "react";
 import styled from "styled-components";
 import { mobile } from "../responsive";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar/Navbar";
-import ForestCanvas from "../components/ForestCanvas";
 import NavbarWhite from "../components/NavbarWhite/NavbarWhite";
+import ForestCanvas from "../components/ForestCanvas";
 import axios from "axios";
 
 const Container = styled.div`
@@ -16,7 +15,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  gap:1vh;
+  gap: 1vh;
 `;
 
 const Side = styled.div`
@@ -33,8 +32,9 @@ const Side1 = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-     ${mobile({ display:"none" })}
+  ${mobile({ display: "none" })}
 `;
+
 const Wrapper = styled.div`
   width: 70%;
   padding: 20px;
@@ -67,7 +67,7 @@ const Button = styled.button`
   width: 40%;
   border: none;
   padding: 15px 20px;
-   background-color:  #914EC2;
+  background-color: #914ec2;
   color: white;
   cursor: pointer;
 `;
@@ -81,11 +81,11 @@ const Message = styled.span`
 
 const Register3D = () => {
   const [formData, setFormData] = useState({
-    name: "", // Added name to form data
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",
-    role: "", // Added role to form data
+    role: "CLIENT", // Keep role fixed to "CLIENT"
   });
 
   const [successMessage, setSuccessMessage] = useState("");
@@ -110,13 +110,13 @@ const Register3D = () => {
       console.log("Registration response:", response.data);
       setSuccessMessage("User registered successfully!");
       setFormData({
-        name: "", // Reset name after registration
+        name: "",
         email: "",
         password: "",
         confirmPassword: "",
-        role: "", // Reset role after registration
+        role: "CLIENT", // Keep role as CLIENT
       });
-      navigate("/login3d"); // Navigate to the login page
+      navigate("/login");
     } catch (error) {
       console.error("Registration error:", error);
       alert("Registration failed. Please try again.");
@@ -125,60 +125,57 @@ const Register3D = () => {
 
   return (
     <>
-      <NavbarWhite/>
+      <NavbarWhite />
       <Container>
-
-      <Side1>
+        <Side1>
           <ForestCanvas />
         </Side1>
-
         <Side>
-        <Wrapper>
-          <Title>Join the RuralSync Network </Title>
-          <Form onSubmit={handleSubmit}>
-            <Input
-              name="name" // Changed to name
-              placeholder="Name" // Placeholder for name input
-              value={formData.name} // Ensure it handles the name field
-              onChange={handleChange}
-            />
-            <Input
-              name="email"
-              placeholder="Email"
-              type="email"
-              value={formData.email}
-              onChange={handleChange}
-            />
-            <Input
-              name="password"
-              type="password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={handleChange}
-            />
-            <Input
-              name="confirmPassword"
-              type="password"
-              placeholder="Confirm Password"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-            />
-            <Input
-              name="role"
-              placeholder="Role" // Placeholder for role input
-              value={formData.role}
-              onChange={handleChange}
-            />
-            <Agreement>
-              By creating an account, I consent to the processing of my personal
-              data in accordance with the <b>PRIVACY POLICY</b>
-            </Agreement>
-            <Button type="submit">CREATE</Button>
-            {successMessage && <Message>{successMessage}</Message>}
-          </Form>
-        </Wrapper>
+          <Wrapper>
+            <Title>Join the RuralSync Network</Title>
+            <Form onSubmit={handleSubmit}>
+              <Input
+                name="name"
+                placeholder="Name"
+                value={formData.name}
+                onChange={handleChange}
+              />
+              <Input
+                name="email"
+                placeholder="Email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+              />
+              <Input
+                name="password"
+                type="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+              />
+              <Input
+                name="confirmPassword"
+                type="password"
+                placeholder="Confirm Password"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+              />
+              <Input
+                name="role"
+                placeholder="Role"
+                value="CLIENT" // Keep role fixed
+                readOnly // Make input read-only
+              />
+              <Agreement>
+                By creating an account, I consent to the processing of my personal data in accordance with the{" "}
+                <b>PRIVACY POLICY</b>
+              </Agreement>
+              <Button type="submit">CREATE</Button>
+              {successMessage && <Message>{successMessage}</Message>}
+            </Form>
+          </Wrapper>
         </Side>
-
       </Container>
     </>
   );

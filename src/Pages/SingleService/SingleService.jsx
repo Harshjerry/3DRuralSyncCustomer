@@ -36,28 +36,22 @@ const SingleService = () => {
   }, [id]);
 
   const handleBook = () => {
-    // Check if there's already a booking in the cart
-    if (cart.bookings.length > 0) {
-      alert("Please complete the previously added booking before adding a new one.");
-    } else {
-      const bookingDetails = {
-        _id: service._id, // Ensure this matches the cart slice's logic
-        name: service.name,
-        service: service.category,
-        price: service.basePrice,
-        quantity: 1,
-        img: service.images?.[0] || '/default-image.png', // Use default image if none exists
-        rating: service.ratings?.average || 0,
-      };
-  
-      // Dispatch the booking action to add it to the Redux cart
-      dispatch(addBooking(bookingDetails));
-  
-      // Navigate to the cart page after booking
-      navigate('/cart');
-    }
+    const bookingDetails = {
+      _id: service._id, // Ensure this matches the cart slice's logic
+      name: service.name,
+      service: service.category,
+      price: service.basePrice,
+      quantity: 1,
+      img: service.images?.[0] || '/default-image.png', // Use default image if none exists
+      rating: service.ratings?.average || 0,
+    };
+
+    // Dispatch the booking action to add it to the Redux cart
+    dispatch(addBooking(bookingDetails));
+
+    // Navigate to the cart page after booking
+    navigate('/cart');
   };
-        
 
   const toggleAvailability = () => {
     setShowAvailability(!showAvailability);
@@ -92,7 +86,7 @@ const SingleService = () => {
               <h3>Company: <span className="highlightedText">{service.serviceCompany?.name || "Not Available"}</span></h3>
             </div>
             <div className="basePrice">
-              <h3>Base Price: <span className="highlightedText">${service.basePrice}</span></h3>
+              <h3>Base Price: <span className="highlightedText">₹{service.basePrice}</span></h3>
             </div>
           </div>
 
@@ -102,7 +96,11 @@ const SingleService = () => {
                 <div className="availabilityPopup">
                   <ul>
                     {service.availability?.length > 0 ? (
-                      service.availability.map((slot, index) => <li key={index}>{slot}</li>)
+                      service.availability.map((slot, index) => (
+                        <li key={index}>
+                          {slot.day} - {slot.startTime} to {slot.endTime}
+                        </li>
+                      ))
                     ) : (
                       <li>No available slots</li>
                     )}
@@ -112,7 +110,11 @@ const SingleService = () => {
                   </button>
                 </div>
               ) : (
-                <button className="availability" style={{ backgroundColor: 'transparent', border: '1px solid black', color: 'black' }} onClick={toggleAvailability}>
+                <button
+                  className="availability"
+                  style={{ backgroundColor: 'transparent', border: '1px solid black', color: 'black' }}
+                  onClick={toggleAvailability}
+                >
                   View Availability
                 </button>
               )}

@@ -14,20 +14,33 @@ const cartSlice = createSlice({
       if (existingBookingIndex === -1) {
         // If booking doesn't exist, add it to the bookings array
         state.bookings.push({ ...action.payload, quantity: 1 }); // Add booking with a quantity of 1
-        state.quantity += 1; // Update total quantity
-        state.total += action.payload.price; // Update total cost
+      } else {
+        // If the booking already exists, increment the quantity of that booking
+        state.bookings[existingBookingIndex].quantity += 1;
       }
-      // If the booking already exists, do not modify state (or you can implement logic to alert the user)
+
+      // Update the total quantity and total cost
+      state.quantity += 1;
+      state.total += action.payload.price;
     },
 
     removeBooking: (state, action) => {
       const existingBookingIndex = state.bookings.findIndex(booking => booking._id === action.payload._id);
+
       if (existingBookingIndex !== -1) {
         const existingBooking = state.bookings[existingBookingIndex];
-        // If there is only one booking, remove it completely
-        state.bookings.splice(existingBookingIndex, 1);
-        state.quantity -= 1; // Decrease total quantity
-        state.total -= existingBooking.price; // Decrease total cost
+
+        if (existingBooking.quantity > 1) {
+          // If there's more than one of this booking, decrease its quantity
+          existingBooking.quantity -= 1;
+        } else {
+          // If there's only one booking, remove it completely
+          state.bookings.splice(existingBookingIndex, 1);
+        }
+
+        // Update the total quantity and total cost
+        state.quantity -= 1;
+        state.total -= existingBooking.price;
       }
     },
 

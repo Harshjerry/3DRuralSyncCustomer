@@ -174,12 +174,14 @@ const Warn = styled.span`
   margin-bottom: 40px;
 `;
 
+
 const Cart = () => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const currentUser = useSelector((state) => state.user.currentUser);
   const [bookings, setBookings] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
+  const [address, setAddress] = useState(""); // Add address state
   const [display, setDisplay] = useState("none");
   const navigate = useNavigate();
 
@@ -217,50 +219,53 @@ const Cart = () => {
 
   const handleCheckout = async () => {
     if (!currentUser) {
-        alert("SIGN-UP REQUIRED FOR CHECKOUT");
-        return;
+      alert("SIGN-UP REQUIRED FOR CHECKOUT");
+      return;
     }
 
-    if (bookings.length > 0 && userLocation) {
-        try {
-            const bookingDate = new Date().toISOString().split('T')[0];
-            const bookingTime = "10:00 AM";
-            const bookingData = {
-                clientId: currentUser.data._id,
-                serviceId: bookings[0]._id,
-                bookingDate: bookingDate,
-                bookingTime: bookingTime,
-                location: {
-                    type: "Point",
-                    coordinates: [userLocation.longitude, userLocation.latitude],
-                },
-            };
+    if (bookings.length > 0 && userLocation && address.trim() !== "") {
+      try {
+        // Map each booking to a format suitable for the backend
+        const bookingsData = bookings.map((booking) => ({
+          clientId: currentUser.data._id,
+          serviceId: booking._id,
+          bookingDate: new Date().toISOString().split("T")[0], // Adjust as needed for specific dates
+          bookingTime: "10:00 AM", // Adjust as needed
+          extraTasks: booking.extraTasks || [], // Optional extra tasks
+          location: {
+            type: "Point",
+            coordinates: [userLocation.longitude, userLocation.latitude],
+          },
+          address: address, // Add the address to the booking data
+        }));
 
-            console.log("Booking data to be sent:", bookingData);
+        // Post the array of bookings
+        const response = await axios.post(
+          "http://localhost:5002/client/booking/book2",
+          { services: bookingsData } // Post an object with "services" key
+        );
 
-            const response = await axios.post(
-                "http://localhost:5002/client/booking/book2",
-                bookingData
-            );
-
-            console.log("Booking posted successfully:", response.data);
-            alert("Booking Done Successfully, Agent on the way");
-            handleRemoveBooking(bookings[0]);
-            navigate("/profile"); // Navigate to profile after successful booking
-        } catch (error) {
-            if (error.response) {
-                console.error("Error posting booking:", error.response.data);
-                alert(`Failed to book the service: ${error.response.data.message || error.response.data}`);
-            } else {
-                console.error("Error posting booking:", error.message);
-                alert("Failed to book the service. Please try again.");
-            }
+        console.log("Bookings posted successfully:", response.data);
+        alert("Booking Done Successfully, Agent on the way");
+        bookings.forEach((booking) => handleRemoveBooking(booking)); // Clear each booking after success
+        navigate("/profile"); // Navigate to profile after successful booking
+      } catch (error) {
+        if (error.response) {
+          console.error("Error posting bookings:", error.response.data);
+          alert(
+            `Failed to book the service: ${
+              error.response.data.message || error.response.data
+            }`
+          );
+        } else {
+          console.error("Error posting bookings:", error.message);
+          alert("Failed to book the service. Please try again.");
         }
+      }
     } else {
-        alert("No bookings found or location not available.");
+      alert("No bookings found, location not available, or address missing.");
     }
-};
-
+  };
 
   return (
     <>
@@ -269,7 +274,7 @@ const Cart = () => {
       <Container>
         <Title>YOUR BAG</Title>
         <Top>
-          <TopButton onClick={() => console.log('Continue Shopping')}>CHECK MORE SERVICES</TopButton>
+          <TopButton onClick={() => console.log("Continue Shopping")}>CHECK MORE SERVICES</TopButton>
         </Top>
         <Bottom>
           <Info>
@@ -297,7 +302,7 @@ const Cart = () => {
                     </Details>
                   </BookingDetail>
                   <PriceDetail>
-                    <ProductPrice>${booking.price}</ProductPrice>
+                    <ProductPrice>₹{booking.price}</ProductPrice>
                     <Remove onClick={() => handleRemoveBooking(booking)}>Remove</Remove>
                   </PriceDetail>
                 </Booking>
@@ -321,12 +326,24 @@ const Cart = () => {
               <SummaryItemText>Shipping Discount</SummaryItemText>
               <SummaryItemPrice>- $5.90</SummaryItemPrice>
             </SummaryItem>
-            <SummaryItem type="total">
+            {/* Add the input field for address */}
+            <SummaryItem>
+              <SummaryItemText>Shipping Address</SummaryItemText>
+              <input
+                type="text"
+                placeholder="Enter your address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                style={{ width: "100%", padding: "10px", fontSize: "14px", borderRadius: "5px", border: "1px solid #ccc" }}
+              />
+            </SummaryItem>
+            <SummaryItem>
               <SummaryItemText>Total</SummaryItemText>
-              <SummaryItemPrice>${cart.total || 0}</SummaryItemPrice>
+              <SummaryItemPrice>
+                ${cart.total ? cart.total + 5.9 : 5.9} {/* Adjust total price if applicable */}
+              </SummaryItemPrice>
             </SummaryItem>
             <Button onClick={handleCheckout}>CHECKOUT NOW</Button>
-            <Warn>{display === "none" ? "" : "Please provide location information to proceed"}</Warn>
           </Summary>
         </Bottom>
       </Container>
@@ -335,3 +352,5 @@ const Cart = () => {
 };
 
 export default Cart;
+
+

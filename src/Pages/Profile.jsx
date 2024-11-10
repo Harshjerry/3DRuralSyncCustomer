@@ -35,7 +35,6 @@ const ProfileImage = styled.img`
   border: 2px solid #ccc;
 `;
 
-
 const ProfileInfo = styled.div`
   display: flex;
   flex-direction: column;
@@ -55,7 +54,7 @@ const UserEmail = styled.p`
 
 const UserRole = styled.p`
   font-size: 0.9rem;
-color:#333;
+  color: #333;
 `;
 
 const BookingsSection = styled.div`
@@ -64,7 +63,7 @@ const BookingsSection = styled.div`
 
 const BookingsTitle = styled.h1`
   font-size: 1.8rem;
-    color:  #914EC2;
+  color: #914EC2;
   margin-bottom: 10px;
 `;
 
@@ -83,14 +82,15 @@ const BookingItem = styled.li`
   justify-content: space-between;
   align-items: center;
   font-size: 1rem;
-  padding: 10px;
+  padding: 15px; /* Increased padding for better spacing */
   background-color: #f9f9f9;
   width: 100%;
-  height: 6vh;
+  height: 10vh;  /* Increased height to make the items taller */
   margin-bottom: 5px;
   border-radius: 5px;
   color: #333;
 `;
+
 
 const BookingField = styled.div`
   flex: 1;
@@ -108,18 +108,17 @@ const Cont = styled.div`
   background-color: white;
   z-index: -2;
   display: flex;
-       overflow-y: hidden;
+  overflow-y: hidden;
 `;
 
 const RS = styled.img`
   position: fixed;
   top: 18vh;
   left: -10vw;
-    filter: brightness(20%);
+  filter: brightness(20%);
   opacity: 0.1; 
   z-index: -1;
 `;
-
 
 const LaptopCont = styled.div`
   position: fixed;
@@ -129,9 +128,8 @@ const LaptopCont = styled.div`
   width: 50vw;
   z-index: 4;
   transform: translateX(-50%);
-  ${mobile({ width:"100vw",top:"5vh"})};
+  ${mobile({ width: "100vw", top: "5vh" })};
 `;
-
 
 const Profi = styled.img`
   position: absolute;
@@ -143,10 +141,17 @@ const Profi = styled.img`
   ${mobile({ width: "90vw", height: "30vh" })};
 `;
 
+const IMG=styled.img`
+width:8vw;
+height:9vh;
+`;
+
 const ProfilePage = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
   const [bookings, setBookings] = useState([]);
+  const [services, setServices] = useState({});
 
+  // Fetch bookings
   useEffect(() => {
     const fetchBookings = async () => {
       if (currentUser.data?._id) {
@@ -160,7 +165,32 @@ const ProfilePage = () => {
     };
 
     fetchBookings();
-  }, [currentUser.data?._id]); 
+  }, [currentUser.data?._id]);
+
+  // Fetch service details for each booking
+  useEffect(() => {
+    const fetchServices = async () => {
+      const serviceDetails = {};
+
+      for (const booking of bookings) {
+        const serviceId = booking.service; // Assuming 'service' in booking refers to service ID
+        if (!serviceDetails[serviceId]) {
+          try {
+            const response = await axios.get(`http://localhost:5002/client/booking/service/${serviceId}`);
+            serviceDetails[serviceId] = response.data.data; // Store service details
+          } catch (error) {
+            console.error(`Error fetching service details for ${serviceId}:`, error);
+          }
+        }
+      }
+
+      setServices(serviceDetails); // Update the state with the fetched service details
+    };
+
+    if (bookings.length > 0) {
+      fetchServices();
+    }
+  }, [bookings]);
 
   return (
     <Cont>
@@ -168,7 +198,7 @@ const ProfilePage = () => {
       <ProfileContainer>
         <RS src='/flower.png' />
         <LaptopCont>
-          <LaptopCanvas/>
+          <LaptopCanvas />
         </LaptopCont>
         <ProfileHeader>
           <ProfileInfo>
@@ -182,19 +212,30 @@ const ProfilePage = () => {
           <BookingsTitle>Your Bookings</BookingsTitle>
           {bookings.length > 0 ? (
             <BookingList>
-              {bookings.map((booking, index) => (
-                <BookingItem key={index}>
-                  <BookingField>{booking.serviceProvider}</BookingField>
-                  <BookingField>{booking.bookingDate}</BookingField>
-                  <BookingField>{booking.status}</BookingField>
-                </BookingItem>
-              ))}
+              {bookings.map((booking, index) => {
+                const service = services[booking.service]; // Accessing the corresponding service details
+                return (
+                  <BookingItem key={index}>
+                    {service ? (
+                      <>
+                        <BookingField>
+                          <IMG src={service.images[0]} alt={service.name} width="50" height="50" />
+                        </BookingField>
+                        <BookingField>{service.name}</BookingField>
+                        <BookingField>₹{service.basePrice}</BookingField>
+                        <BookingField style={{color:" #914EC2"}}>{booking.status}</BookingField>
+                      </>
+                    ) : (
+                      <NoBookings>Loading service details...</NoBookings>
+                    )}
+                  </BookingItem>
+                );
+              })}
             </BookingList>
           ) : (
             <NoBookings>No bookings found</NoBookings>
           )}
         </BookingsSection>
-
       </ProfileContainer>
     </Cont>
   );

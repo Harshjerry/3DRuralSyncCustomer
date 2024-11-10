@@ -17,7 +17,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  gap:1vh;
+  gap: 1vh;
 `;
 
 const Side = styled.div`
@@ -28,14 +28,13 @@ const Side = styled.div`
   justify-content: center;
 `;
 
-
 const Side1 = styled.div`
   flex: 1;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-   ${mobile({ display:"none" })}
+  ${mobile({ display: "none" })}
 `;
 
 const Wrapper = styled.div`
@@ -66,7 +65,7 @@ const Button = styled.button`
   width: 40%;
   border: none;
   padding: 15px 20px;
-background-color:  #914EC2;
+  background-color: #914ec2;
   color: white;
   cursor: pointer;
   margin-bottom: 10px;
@@ -91,7 +90,8 @@ const Login3D = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState("");
+  
+  const role = "CLIENT"; // Fixed role
 
   const navigate = useNavigate();
   const dispatch = useDispatch(); // Initialize useDispatch
@@ -129,10 +129,26 @@ const Login3D = () => {
           <Wrapper>
             <Title>Bridging Villages with Services</Title>
             <Form>
-              <Input placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
-              <Input placeholder="Password" type="password" onChange={(e) => setPassword(e.target.value)} />
-              <Input placeholder="Email" type="email" onChange={(e) => setEmail(e.target.value)} />
-              <Input placeholder="Role" onChange={(e) => setRole(e.target.value)} />
+              <Input
+                placeholder="Username"
+                onChange={(e) => setUsername(e.target.value)}
+              />
+              <Input
+                placeholder="Password"
+                type="password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <Input
+                placeholder="Email"
+                type="email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              {/* The role input is now read-only */}
+              <Input
+                placeholder="Role"
+                value={role}
+                readOnly
+              />
               <Button onClick={handleClick}>LOGIN</Button>
               <StyledLink to="/register3d">CREATE A NEW ACCOUNT</StyledLink>
             </Form>
