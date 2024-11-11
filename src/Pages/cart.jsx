@@ -320,11 +320,11 @@ const Cart = () => {
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Estimated Shipping</SummaryItemText>
-              <SummaryItemPrice>$5.90</SummaryItemPrice>
+              <SummaryItemPrice>₹50.90</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Shipping Discount</SummaryItemText>
-              <SummaryItemPrice>- $5.90</SummaryItemPrice>
+              <SummaryItemPrice>- ₹50.90</SummaryItemPrice>
             </SummaryItem>
             {/* Add the input field for address */}
             <SummaryItem>
@@ -340,7 +340,7 @@ const Cart = () => {
             <SummaryItem>
               <SummaryItemText>Total</SummaryItemText>
               <SummaryItemPrice>
-                ${cart.total ? cart.total + 5.9 : 5.9} {/* Adjust total price if applicable */}
+              ₹{cart.total ? cart.total + 50.9 : 50.9} {/* Adjust total price if applicable */}
               </SummaryItemPrice>
             </SummaryItem>
             <Button onClick={handleCheckout}>CHECKOUT NOW</Button>

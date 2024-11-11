@@ -70,7 +70,7 @@ const BookingsTitle = styled.h1`
 const BookingList = styled.ul`
   list-style-type: none;
   padding: 0;
-  max-height: 25vh; /* Set a max height */
+  max-height: 35vh; /* Set a max height */
   overflow-y: auto;  /* Enable scrolling */
   overflow-x:hidden;
   border: 1px solid #ccc; /* Optional: add a border for better visibility */
